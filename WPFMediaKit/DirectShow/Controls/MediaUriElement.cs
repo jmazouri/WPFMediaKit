@@ -195,6 +195,11 @@ namespace WPFMediaKit.DirectShow.Controls
             PlayerSetAudioRenderer();
             PlayerSetLoop();
             PlayerSetSource();
+            MediaUriPlayer.MediaPositionChanged += delegate
+            {
+                InvokeMediaPositionChanged(null);
+            };
+
             base.EndInit();
         }
 
@@ -227,6 +232,17 @@ namespace WPFMediaKit.DirectShow.Controls
         {
             var player = new MediaUriPlayer();
             return player;
+        }
+
+        /// <summary>
+        /// Notifies when the position of the media has changed
+        /// </summary>
+        public event EventHandler MediaPositionChanged;
+
+        protected void InvokeMediaPositionChanged(EventArgs e)
+        {
+            EventHandler mediaPositionChangedHandler = MediaPositionChanged;
+            if (mediaPositionChangedHandler != null) mediaPositionChangedHandler(this, e);
         }
     }
 }
